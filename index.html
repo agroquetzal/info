@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Agro Quetzal — Tecnología de altura para tu campo</title>
+<meta name="description" content="Fumigación agrícola de precisión con drones DJI Agras T100. Servicio profesional en La Barca, Jalisco y toda la región." />
+
+<!-- Fonts: Fraunces (editorial, orgánica) + Manrope (geométrica, técnica) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,400..900&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['Fraunces', 'ui-serif', 'Georgia', 'serif'],
+          body:    ['Manrope', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        },
+        colors: {
+          ink:    '#0f1a14',
+          forest: { 50:'#f2f5f2', 100:'#dfe8e0', 500:'#355e3b', 700:'#1f3d2a', 900:'#0f1a14' },
+          moss:   '#5a7a4d',
+          wheat:  { 400:'#e6c989', 500:'#d4af65', 600:'#b8954e' },
+          cream:  '#f7f2e7',
+          bone:   '#fbf8f1',
+        },
+      }
+    }
+  }
+</script>
+
+<style>
+  :root{
+    --ink:#0f1a14;
+    --forest:#1f3d2a;
+    --forest-deep:#0f2418;
+    --moss:#5a7a4d;
+    --wheat:#d4af65;
+    --wheat-dark:#b8954e;
+    --cream:#f7f2e7;
+    --bone:#fbf8f1;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family:'Manrope', system-ui, sans-serif;
+    background: var(--bone);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Subtle grain overlay for warmth */
+  .grain::before{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:1;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity:.55; mix-blend-mode:multiply;
+  }
+
+  /* Display type refinements */
+  .font-display { font-family:'Fraunces', Georgia, serif; font-optical-sizing:auto; }
+  .font-display.italic { font-variation-settings:"SOFT" 100, "WONK" 1; }
+
+  /* Section numeral badge */
+  .section-tag{
+    display:inline-flex; align-items:center; gap:.65rem;
+    font-family:'Manrope',sans-serif; font-size:.72rem; font-weight:600;
+    letter-spacing:.22em; text-transform:uppercase; color:var(--moss);
+  }
+  .section-tag::before{
+    content:""; width:2.2rem; height:1px; background:currentColor; opacity:.6;
+  }
+
+  /* Hero */
+  .hero-bg{
+    background:
+      linear-gradient(180deg, rgba(15,26,20,.45) 0%, rgba(15,26,20,.35) 40%, rgba(15,26,20,.78) 100%),
+      url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat,
+      linear-gradient(135deg,#1f3d2a,#0f1a14);
+  }
+
+  /* Underline animation for nav */
+  .nav-link{ position:relative; }
+  .nav-link::after{
+    content:""; position:absolute; left:0; right:0; bottom:-6px; height:2px;
+    background:var(--wheat); transform:scaleX(0); transform-origin:left;
+    transition: transform .35s cubic-bezier(.2,.7,.2,1);
+  }
+  .nav-link:hover::after, .nav-link.is-active::after{ transform:scaleX(1); }
+
+  /* Buttons */
+  .btn-primary{
+    display:inline-flex; align-items:center; gap:.6rem;
+    background:var(--wheat); color:var(--forest-deep);
+    padding:.95rem 1.6rem; border-radius:9999px; font-weight:700;
+    letter-spacing:.02em; transition: all .3s ease;
+    box-shadow: 0 1px 0 rgba(0,0,0,.05), 0 10px 24px -14px rgba(184,149,78,.55);
+  }
+  .btn-primary:hover{ background:var(--wheat-dark); transform:translateY(-2px); }
+  .btn-primary .arrow{ transition: transform .3s ease; }
+  .btn-primary:hover .arrow{ transform: translateX(4px); }
+
+  .btn-ghost{
+    display:inline-flex; align-items:center; gap:.5rem;
+    border:1px solid rgba(255,255,255,.35); color:#fff;
+    padding:.85rem 1.4rem; border-radius:9999px; font-weight:600;
+    backdrop-filter: blur(6px); transition: all .3s ease;
+  }
+  .btn-ghost:hover{ background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.6); }
+
+  /* Cards */
+  .card{
+    background:#fff; border:1px solid rgba(15,26,20,.07);
+    border-radius:18px; transition: all .4s cubic-bezier(.2,.7,.2,1);
+    position:relative; overflow:hidden;
+  }
+  .card:hover{
+    transform: translateY(-4px);
+    border-color: rgba(184,149,78,.35);
+    box-shadow: 0 30px 50px -30px rgba(15,26,20,.2);
+  }
+  .card::after{
+    content:""; position:absolute; inset:auto 0 0 0; height:3px;
+    background: linear-gradient(90deg, var(--wheat), var(--moss));
+    transform:scaleX(0); transform-origin:left;
+    transition: transform .5s cubic-bezier(.2,.7,.2,1);
+  }
+  .card:hover::after{ transform:scaleX(1); }
+
+  /* Spec row */
+  .spec-row{
+    display:grid; grid-template-columns: auto 1fr auto; gap:1.5rem; align-items:baseline;
+    padding:1.25rem 0; border-top:1px solid rgba(15,26,20,.08);
+  }
+  .spec-row:last-child{ border-bottom:1px solid rgba(15,26,20,.08); }
+  .spec-row .num{
+    font-family:'Fraunces',serif; font-size:.78rem; color:var(--moss); font-variant-numeric:tabular-nums;
+    font-style:italic; font-weight:500; letter-spacing:.05em;
+  }
+  .spec-row .val{
+    font-family:'Fraunces',serif; font-size:1.05rem; font-weight:600; color:var(--forest-deep);
+    text-align:right; white-space:nowrap;
+  }
+
+  /* Comparative table */
+  .cmp-table{ width:100%; border-collapse: collapse; }
+  .cmp-table th, .cmp-table td{
+    padding:1.1rem 1rem; text-align:center; border-bottom:1px solid rgba(15,26,20,.08);
+  }
+  .cmp-table thead th{
+    font-family:'Manrope',sans-serif; font-size:.72rem; font-weight:700;
+    letter-spacing:.18em; text-transform:uppercase; color:var(--moss);
+    padding-bottom:1.3rem; border-bottom:2px solid rgba(15,26,20,.12);
+  }
+  .cmp-table tbody tr:first-child td{ padding-top:1.4rem; }
+  .cmp-table .criterion{
+    text-align:left; font-weight:600; font-family:'Fraunces',serif;
+    font-size:1.02rem; color:var(--forest-deep);
+  }
+  .cmp-table .highlight-col{
+    background: linear-gradient(180deg, rgba(212,175,101,.08), rgba(212,175,101,.03));
+    border-left:1px solid rgba(212,175,101,.3); border-right:1px solid rgba(212,175,101,.3);
+  }
+  .cmp-table thead .highlight-col{
+    background: linear-gradient(180deg, rgba(212,175,101,.18), rgba(212,175,101,.05));
+    color:var(--forest-deep); border-top:2px solid var(--wheat);
+  }
+
+  .pill{
+    display:inline-flex; align-items:center; gap:.4rem;
+    font-size:.78rem; font-weight:600; padding:.35rem .7rem; border-radius:9999px;
+    letter-spacing:.02em;
+  }
+  .pill-yes { background:#e7f2e6; color:#2e6b35; }
+  .pill-mid { background:#fff4de; color:#a66b17; }
+  .pill-no  { background:#fbe7e4; color:#a4302a; }
+
+  /* Accordion */
+  details.faq{ border-bottom:1px solid rgba(15,26,20,.12); }
+  details.faq > summary{
+    cursor:pointer; list-style:none; padding:1.6rem 0;
+    display:grid; grid-template-columns: 1fr auto; gap:1rem; align-items:center;
+    font-family:'Fraunces',serif; font-size:1.3rem; font-weight:500; color:var(--forest-deep);
+    transition: color .3s ease;
+  }
+  details.faq > summary::-webkit-details-marker{ display:none; }
+  details.faq > summary:hover{ color:var(--moss); }
+  details.faq .icn{
+    width:38px; height:38px; border-radius:50%; border:1px solid rgba(15,26,20,.2);
+    display:inline-flex; align-items:center; justify-content:center;
+    transition: all .35s ease;
+  }
+  details.faq[open] .icn{ background:var(--forest); border-color:var(--forest); color:#fff; transform:rotate(180deg); }
+  details.faq .body{
+    padding:0 0 1.6rem 0; color:rgba(15,26,20,.72); font-size:1.02rem; line-height:1.7;
+    max-width:62ch;
+  }
+  details.faq[open] > summary > .q-icon-plus{ display:none; }
+  details.faq > summary > .q-icon-minus{ display:none; }
+  details.faq[open] > summary > .q-icon-minus{ display:inline; }
+
+  /* Video card */
+  .video-card{ position:relative; overflow:hidden; border-radius:20px; cursor:pointer; }
+  .video-card .thumb{
+    aspect-ratio: 16/10; background-size:cover; background-position:center;
+    transition: transform .8s cubic-bezier(.2,.7,.2,1);
+  }
+  .video-card:hover .thumb{ transform:scale(1.06); }
+  .video-card .shade{
+    position:absolute; inset:0;
+    background: linear-gradient(180deg, rgba(15,26,20,0) 40%, rgba(15,26,20,.85) 100%);
+  }
+  .video-card .play{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:72px; height:72px; border-radius:50%;
+    background:rgba(255,255,255,.92); display:flex; align-items:center; justify-content:center;
+    transition: transform .4s cubic-bezier(.2,.7,.2,1);
+    box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  }
+  .video-card:hover .play{ transform:translate(-50%,-50%) scale(1.1); background:#fff; }
+  .platform-tag{
+    position:absolute; top:14px; left:14px; font-size:.7rem; font-weight:700;
+    padding:.3rem .65rem; border-radius:6px; letter-spacing:.08em; text-transform:uppercase;
+    backdrop-filter: blur(6px);
+  }
+  .tag-yt{ background:rgba(255,0,0,.85); color:#fff; }
+  .tag-tt{ background:rgba(0,0,0,.85); color:#fff; }
+
+  /* Form (light sections) */
+  .input, .textarea, .select{
+    width:100%; background:transparent; border:none;
+    border-bottom:1px solid rgba(15,26,20,.22);
+    padding:1rem 0 .75rem 0; font-family:'Manrope',sans-serif; font-size:1rem; color:var(--ink);
+    transition: border-color .3s ease;
+  }
+  .input:focus, .textarea:focus, .select:focus{
+    outline:none; border-bottom-color:var(--wheat-dark);
+  }
+  .input::placeholder, .textarea::placeholder{ color:rgba(15,26,20,.4); }
+  .form-label{
+    font-size:.72rem; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--moss); font-weight:600; margin-bottom:.3rem; display:block;
+  }
+
+  /* Form variant for DARK backgrounds (cotización section) */
+  #cotizar .input,
+  #cotizar .textarea,
+  #cotizar .select{
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 12px;
+    padding: .95rem 1.1rem;
+    color: #fff;
+    font-size: .98rem;
+    transition: all .3s ease;
+  }
+  #cotizar .input:focus,
+  #cotizar .textarea:focus,
+  #cotizar .select:focus{
+    outline: none;
+    border-color: var(--wheat);
+    background: rgba(255,255,255,.09);
+    box-shadow: 0 0 0 3px rgba(212,175,101,.12);
+  }
+  #cotizar .input::placeholder,
+  #cotizar .textarea::placeholder{
+    color: rgba(255,255,255,.42);
+  }
+  #cotizar .select{
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23d4af65' stroke-width='2' stroke-linecap='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.8rem;
+  }
+  #cotizar .select option{ background: #1f3d2a; color: #fff; }
+  #cotizar .form-label{
+    color: var(--wheat);
+    font-size:.68rem;
+    letter-spacing:.22em;
+  }
+
+  /* Reveal animation */
+  .reveal{ opacity:0; transform:translateY(24px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+  .reveal.d1{ transition-delay:.08s; }
+  .reveal.d2{ transition-delay:.16s; }
+  .reveal.d3{ transition-delay:.24s; }
+  .reveal.d4{ transition-delay:.32s; }
+
+  /* Decorative giant numeral */
+  .huge-numeral{
+    font-family:'Fraunces',serif; font-weight:300; font-style:italic;
+    color:transparent; -webkit-text-stroke:1px rgba(90,122,77,.3);
+    font-size: clamp(7rem, 16vw, 14rem); line-height:.85;
+    pointer-events:none; user-select:none;
+  }
+
+  /* Marquee */
+  .marquee{
+    overflow:hidden; white-space:nowrap; border-top:1px solid rgba(15,26,20,.12);
+    border-bottom:1px solid rgba(15,26,20,.12); background:var(--cream);
+  }
+  .marquee-track{
+    display:inline-flex; gap:3rem; padding:1.2rem 0;
+    animation: marquee 40s linear infinite;
+  }
+  .marquee span{ font-family:'Fraunces',serif; font-style:italic; font-size:1.35rem; color:var(--forest-deep); }
+  .marquee .dot{ color:var(--wheat-dark); }
+  @keyframes marquee{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* Mobile nav */
+  .mobile-panel{
+    transform:translateY(-100%); opacity:0; pointer-events:none;
+    transition: transform .4s cubic-bezier(.2,.7,.2,1), opacity .3s ease;
+  }
+  .mobile-panel.open{ transform:translateY(0); opacity:1; pointer-events:auto; }
+
+  /* Responsive tweaks */
+  @media (max-width: 768px){
+    .cmp-wrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    .cmp-table{ min-width: 640px; }
+  }
+</style>
+</head>
+
+<body class="grain font-body text-ink">
+
+<!-- ============ NAVBAR ============ -->
+<header id="nav" class="fixed top-0 inset-x-0 z-50 transition-all duration-500">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div id="navInner" class="flex items-center justify-between py-5 md:py-6 transition-all duration-500">
+      <!-- Logo -->
+      <a href="#top" class="flex items-center gap-3 group">
+        <!-- Logo mark (stylized quetzal feather + Q) -->
+        <span class="relative w-11 h-11 rounded-full flex items-center justify-center" style="background:linear-gradient(135deg,#1f3d2a,#355e3b);">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#d4af65" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3c4 2 6 5 6 9s-2 7-6 9c-4-2-6-5-6-9s2-7 6-9Z"/>
+            <path d="M12 3v18"/>
+            <path d="M8.5 7c1 1 2 1.5 3.5 1.5"/>
+            <path d="M8 11c1.2 1 2.4 1.5 4 1.5"/>
+            <path d="M8.5 15c1 1 2 1.5 3.5 1.5"/>
+          </svg>
+        </span>
+        <span class="flex flex-col leading-none">
+          <span id="brandWord" class="font-display text-lg font-semibold tracking-tight text-white transition-colors duration-500">Agro Quetzal</span>
+          <span id="brandTag" class="text-[10px] tracking-[.24em] uppercase text-white/70 mt-1 transition-colors duration-500">Tecnología · Precisión · Campo</span>
+        </span>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="hidden lg:flex items-center gap-7 text-sm font-medium">
+        <a href="#inicio"       class="nav-link is-active text-white transition-colors duration-500" data-nav>Inicio</a>
+        <a href="#tecnologia"   class="nav-link text-white/85 hover:text-white transition-colors duration-500" data-nav>Tecnología</a>
+        <a href="#beneficios"   class="nav-link text-white/85 hover:text-white transition-colors duration-500" data-nav>Beneficios</a>
+        <a href="#proceso"      class="nav-link text-white/85 hover:text-white transition-colors duration-500" data-nav>Proceso</a>
+        <a href="#comparativa"  class="nav-link text-white/85 hover:text-white transition-colors duration-500" data-nav>Comparativa</a>
+        <a href="#faq"          class="nav-link text-white/85 hover:text-white transition-colors duration-500" data-nav>FAQ</a>
+        <a href="#videos"       class="nav-link text-white/85 hover:text-white transition-colors duration-500" data-nav>Videos</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a href="#cotizar" class="hidden sm:inline-flex btn-primary text-sm">
+          Cotizar
+          <span class="arrow">→</span>
+        </a>
+        <button id="menuBtn" class="lg:hidden w-11 h-11 rounded-full flex items-center justify-center border border-white/30 text-white" aria-label="Menú">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="4" y1="7"  x2="20" y2="7"/>
+            <line x1="4" y1="12" x2="20" y2="12"/>
+            <line x1="4" y1="17" x2="20" y2="17"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile panel -->
+  <div id="mobilePanel" class="mobile-panel lg:hidden fixed inset-x-0 top-0 bg-forest-900 pt-24 pb-8 px-6 text-white">
+    <nav class="flex flex-col gap-5 text-lg font-display">
+      <a href="#inicio"      class="mobile-link border-b border-white/10 pb-4">Inicio</a>
+      <a href="#tecnologia"  class="mobile-link border-b border-white/10 pb-4">Tecnología</a>
+      <a href="#beneficios"  class="mobile-link border-b border-white/10 pb-4">Beneficios</a>
+      <a href="#proceso"     class="mobile-link border-b border-white/10 pb-4">Cómo funciona</a>
+      <a href="#comparativa" class="mobile-link border-b border-white/10 pb-4">Comparativa</a>
+      <a href="#faq"         class="mobile-link border-b border-white/10 pb-4">FAQ</a>
+      <a href="#videos"      class="mobile-link border-b border-white/10 pb-4">Videos</a>
+      <a href="#cotizar"     class="mobile-link">Cotizar</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section id="inicio" class="relative hero-bg min-h-[100svh] flex items-end text-white overflow-hidden">
+  <!-- Top bar metadata -->
+  <div class="absolute top-28 md:top-32 left-0 right-0 px-5 md:px-8 flex justify-between text-[11px] tracking-[.24em] uppercase text-white/70 font-medium">
+    <span class="flex items-center gap-2">
+      <span class="inline-block w-2 h-2 rounded-full bg-wheat-500 animate-pulse"></span>
+      La Barca · Jalisco · MX
+    </span>
+    <span class="hidden md:inline">DJI Agras T100 · Fumigación de Precisión</span>
+    <span>Temporada 2026</span>
+  </div>
+
+  <!-- Right-side vertical label -->
+  <div class="hidden xl:flex absolute right-6 top-1/2 -translate-y-1/2 text-[10px] uppercase tracking-[.4em] text-white/60 [writing-mode:vertical-rl]">
+    Agricultura de precisión · Desde 2024
+  </div>
+
+  <div class="relative max-w-7xl mx-auto w-full px-5 md:px-8 pb-16 md:pb-24 pt-40">
+    <div class="max-w-4xl">
+      <p class="section-tag text-wheat-500 reveal">
+        <span style="background:currentColor; display:inline-block; width:2.2rem; height:1px; opacity:.7;"></span>
+        Agricultura de altura
+      </p>
+
+      <h1 class="font-display font-light text-white mt-6 leading-[0.95] reveal d1" style="font-size: clamp(2.6rem, 7.5vw, 6rem);">
+        Tecnología de <span class="italic text-wheat-400" style="font-weight:300;">altura</span><br>
+        para tu campo.
+      </h1>
+
+      <p class="mt-8 text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed reveal d2">
+        Llevamos tu cultivo al siguiente nivel con el <strong class="text-white">DJI Agras T100</strong>:
+        fumigación aérea de precisión milimétrica, máximo rendimiento y cero compactación del suelo.
+      </p>
+
+      <div class="mt-10 flex flex-wrap items-center gap-4 reveal d3">
+        <a href="#cotizar" class="btn-primary text-base">
+          Solicitar cotización
+          <span class="arrow">→</span>
+        </a>
+        <a href="#tecnologia" class="btn-ghost text-sm">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          Conoce el equipo
+        </a>
+      </div>
+
+      <!-- Hero stats -->
+      <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 max-w-3xl reveal d4">
+        <div>
+          <div class="font-display text-3xl md:text-4xl font-light text-wheat-400">100<span class="text-white/70 text-xl">L</span></div>
+          <div class="text-xs uppercase tracking-[.2em] text-white/60 mt-2">Tanque Líquido</div>
+        </div>
+        <div>
+          <div class="font-display text-3xl md:text-4xl font-light text-wheat-400">40<span class="text-white/70 text-lg">L/min</span></div>
+          <div class="text-xs uppercase tracking-[.2em] text-white/60 mt-2">Tasa de flujo</div>
+        </div>
+        <div>
+          <div class="font-display text-3xl md:text-4xl font-light text-wheat-400">13<span class="text-white/70 text-lg">m</span></div>
+          <div class="text-xs uppercase tracking-[.2em] text-white/60 mt-2">Ancho aspersión</div>
+        </div>
+        <div>
+          <div class="font-display text-3xl md:text-4xl font-light text-wheat-400">360°</div>
+          <div class="text-xs uppercase tracking-[.2em] text-white/60 mt-2">Visión radar</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- scroll indicator -->
+    <div class="hidden md:flex absolute bottom-8 right-8 items-center gap-3 text-xs uppercase tracking-[.3em] text-white/60">
+      Scroll
+      <svg class="animate-bounce" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Maíz</span><span class="dot">✦</span>
+    <span>Agave</span><span class="dot">✦</span>
+    <span>Trigo</span><span class="dot">✦</span>
+    <span>Sorgo</span><span class="dot">✦</span>
+    <span>Caña de azúcar</span><span class="dot">✦</span>
+    <span>Alfalfa</span><span class="dot">✦</span>
+    <span>Frijol</span><span class="dot">✦</span>
+    <span>Hortalizas</span><span class="dot">✦</span>
+    <!-- duplicate for seamless loop -->
+    <span>Maíz</span><span class="dot">✦</span>
+    <span>Agave</span><span class="dot">✦</span>
+    <span>Trigo</span><span class="dot">✦</span>
+    <span>Sorgo</span><span class="dot">✦</span>
+    <span>Caña de azúcar</span><span class="dot">✦</span>
+    <span>Alfalfa</span><span class="dot">✦</span>
+    <span>Frijol</span><span class="dot">✦</span>
+    <span>Hortalizas</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- ============ TECNOLOGÍA / DJI T100 ============ -->
+<section id="tecnologia" class="relative py-24 md:py-32 overflow-hidden">
+  <!-- decorative huge numeral -->
+  <div class="absolute -right-10 top-10 huge-numeral">01</div>
+
+  <div class="max-w-7xl mx-auto px-5 md:px-8 relative">
+    <div class="grid lg:grid-cols-12 gap-12 lg:gap-16">
+      <!-- Left: context -->
+      <div class="lg:col-span-5 reveal">
+        <p class="section-tag">01 · Nuestro Equipo</p>
+        <h2 class="font-display font-light text-forest-900 mt-6 leading-[1.02]" style="font-size: clamp(2.1rem, 4.2vw, 3.4rem);">
+          El poder del <span class="italic" style="font-weight:400;">DJI Agras T100</span>.
+        </h2>
+        <p class="mt-6 text-ink/75 text-lg leading-relaxed max-w-md">
+          Operamos con la tecnología más avanzada del mercado. El T100 representa la cúspide de la innovación agrícola, con capacidades excepcionales para grandes extensiones y terrenos difíciles.
+        </p>
+
+        <!-- specs list -->
+        <div class="mt-10">
+          <div class="spec-row">
+            <span class="num">I.</span>
+            <span class="font-display text-forest-900 text-lg">Tanque de pulverización</span>
+            <span class="val">100 L</span>
+          </div>
+          <div class="spec-row">
+            <span class="num">II.</span>
+            <span class="font-display text-forest-900 text-lg">Esparcimiento de sólidos</span>
+            <span class="val">150 L · 100 kg</span>
+          </div>
+          <div class="spec-row">
+            <span class="num">III.</span>
+            <span class="font-display text-forest-900 text-lg">Tasa de flujo ultra-alta</span>
+            <span class="val">40 L/min</span>
+          </div>
+          <div class="spec-row">
+            <span class="num">IV.</span>
+            <span class="font-display text-forest-900 text-lg">Velocidad máxima</span>
+            <span class="val">20 m/s</span>
+          </div>
+          <div class="spec-row">
+            <span class="num">V.</span>
+            <span class="font-display text-forest-900 text-lg">Ancho de aspersión</span>
+            <span class="val">hasta 13 m</span>
+          </div>
+          <div class="spec-row">
+            <span class="num">VI.</span>
+            <span class="font-display text-forest-900 text-lg">Radar onda milimétrica</span>
+            <span class="val">Visión 360°</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: visual + capability grid -->
+      <div class="lg:col-span-7">
+        <!-- Hero visual frame -->
+        <div class="relative rounded-3xl overflow-hidden aspect-[4/3] reveal d1" style="background:linear-gradient(135deg,#0f2418,#355e3b);">
+          <div class="absolute inset-0 bg-cover bg-center"
+               style="background-image:url('dron.jpg');"></div>
+          <div class="absolute inset-0" style="background:linear-gradient(180deg,rgba(15,26,20,.15),rgba(15,26,20,.65));"></div>
+          <!-- Overlay tech callouts -->
+          <div class="absolute top-5 left-5 flex flex-col gap-2">
+            <span class="text-[10px] tracking-[.3em] uppercase text-white/70">MODELO</span>
+            <span class="font-display text-white text-2xl md:text-3xl">DJI Agras T100</span>
+          </div>
+          <div class="absolute bottom-5 right-5 flex gap-3">
+            <span class="pill" style="background:rgba(255,255,255,.15); color:#fff; backdrop-filter:blur(8px);">
+              RTK · Centimétrico
+            </span>
+            <span class="pill" style="background:rgba(212,175,101,.9); color:#0f2418;">
+              2026 Flagship
+            </span>
+          </div>
+        </div>
+
+        <!-- Capability cards -->
+        <div class="grid sm:grid-cols-2 gap-4 mt-6">
+          <div class="card p-6 reveal d2">
+            <div class="flex items-start gap-4">
+              <div class="shrink-0 w-11 h-11 rounded-full bg-forest-50 flex items-center justify-center text-forest-700">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M7 7V4h10v3"/></svg>
+              </div>
+              <div>
+                <h3 class="font-display text-lg text-forest-900">Capacidad masiva</h3>
+                <p class="text-sm text-ink/70 mt-1">100 L líquido + 150 L sólidos. Menos recargas, más hectáreas por jornada.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card p-6 reveal d3">
+            <div class="flex items-start gap-4">
+              <div class="shrink-0 w-11 h-11 rounded-full bg-forest-50 flex items-center justify-center text-forest-700">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="13 2 13 11 20 11 11 22 11 13 4 13 13 2"/></svg>
+              </div>
+              <div>
+                <h3 class="font-display text-lg text-forest-900">Alta eficiencia</h3>
+                <p class="text-sm text-ink/70 mt-1">40 L/min cubren grandes extensiones en tiempo récord.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card p-6 reveal d3">
+            <div class="flex items-start gap-4">
+              <div class="shrink-0 w-11 h-11 rounded-full bg-forest-50 flex items-center justify-center text-forest-700">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="3" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21"/><line x1="3" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21" y2="12"/></svg>
+              </div>
+              <div>
+                <h3 class="font-display text-lg text-forest-900">Velocidad y precisión</h3>
+                <p class="text-sm text-ink/70 mt-1">20 m/s con 13 m de aspersión y posicionamiento RTK.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card p-6 reveal d4">
+            <div class="flex items-start gap-4">
+              <div class="shrink-0 w-11 h-11 rounded-full bg-forest-50 flex items-center justify-center text-forest-700">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg>
+              </div>
+              <div>
+                <h3 class="font-display text-lg text-forest-900">Seguridad inteligente</h3>
+                <p class="text-sm text-ink/70 mt-1">Radar de onda milimétrica + visión binocular. Evasión 360° de obstáculos.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BENEFICIOS ============ -->
+<section id="beneficios" class="relative py-24 md:py-32 bg-cream overflow-hidden">
+  <div class="absolute -left-10 top-10 huge-numeral">02</div>
+
+  <div class="max-w-7xl mx-auto px-5 md:px-8 relative">
+    <div class="max-w-3xl reveal">
+      <p class="section-tag">02 · Ventajas</p>
+      <h2 class="font-display font-light text-forest-900 mt-6 leading-[1.02]" style="font-size: clamp(2.1rem, 4.2vw, 3.4rem);">
+        Beneficios reales de fumigar <span class="italic" style="font-weight:400;">con dron.</span>
+      </h2>
+      <p class="mt-6 text-ink/75 text-lg max-w-xl">
+        No es solo tecnología: es mejor agricultura. Estos son los resultados que nuestros clientes obtienen desde el primer vuelo.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5 mt-14">
+
+      <!-- Benefit 1: Agua -->
+      <div class="card p-8 reveal d1">
+        <div class="flex items-center justify-between">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:linear-gradient(135deg,#e4f0e4,#cfe0cf);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1f3d2a" stroke-width="1.8" stroke-linejoin="round">
+              <path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/>
+            </svg>
+          </div>
+          <span class="font-display italic text-moss text-sm">i.</span>
+        </div>
+        <h3 class="font-display text-xl text-forest-900 mt-6 leading-tight">Ahorro extremo de agua</h3>
+        <p class="text-sm text-ink/70 mt-3 leading-relaxed">
+          Nuestro sistema de Ultra Bajo Volumen (UBV) reduce el consumo masivamente frente a métodos tradicionales.
+        </p>
+      </div>
+
+      <!-- Benefit 2: Suelo -->
+      <div class="card p-8 reveal d2">
+        <div class="flex items-center justify-between">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:linear-gradient(135deg,#e4f0e4,#cfe0cf);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1f3d2a" stroke-width="1.8" stroke-linejoin="round">
+              <path d="M4 18h16"/><path d="M6 18v-3a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v3"/>
+              <circle cx="12" cy="7" r="3"/>
+            </svg>
+          </div>
+          <span class="font-display italic text-moss text-sm">ii.</span>
+        </div>
+        <h3 class="font-display text-xl text-forest-900 mt-6 leading-tight">Cero compactación</h3>
+        <p class="text-sm text-ink/70 mt-3 leading-relaxed">
+          Al trabajar desde el aire, evitamos la maquinaria pesada que compacta la tierra y asfixia las raíces.
+        </p>
+      </div>
+
+      <!-- Benefit 3: Cultivo -->
+      <div class="card p-8 reveal d3">
+        <div class="flex items-center justify-between">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:linear-gradient(135deg,#e4f0e4,#cfe0cf);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1f3d2a" stroke-width="1.8" stroke-linejoin="round">
+              <path d="M6 22c0-8 6-12 12-12"/>
+              <path d="M14 4c-1 4-3 7-8 8"/>
+            </svg>
+          </div>
+          <span class="font-display italic text-moss text-sm">iii.</span>
+        </div>
+        <h3 class="font-display text-xl text-forest-900 mt-6 leading-tight">Sin daños al cultivo</h3>
+        <p class="text-sm text-ink/70 mt-3 leading-relaxed">
+          Eliminamos el pisoteo y el daño mecánico causados por las llantas de tractores y el tránsito de personal.
+        </p>
+      </div>
+
+      <!-- Benefit 4: Salud -->
+      <div class="card p-8 reveal d4">
+        <div class="flex items-center justify-between">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center" style="background:linear-gradient(135deg,#e4f0e4,#cfe0cf);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1f3d2a" stroke-width="1.8" stroke-linejoin="round">
+              <path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/>
+              <path d="M9 12l2 2 4-4"/>
+            </svg>
+          </div>
+          <span class="font-display italic text-moss text-sm">iv.</span>
+        </div>
+        <h3 class="font-display text-xl text-forest-900 mt-6 leading-tight">Protección a la salud</h3>
+        <p class="text-sm text-ink/70 mt-3 leading-relaxed">
+          Reducimos a cero la exposición directa de los trabajadores agrícolas a agroquímicos y pesticidas.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- impact stats ribbon -->
+    <div class="mt-14 bg-forest-900 text-white rounded-3xl p-8 md:p-12 grid md:grid-cols-3 gap-10 items-center reveal">
+      <div class="md:col-span-1">
+        <p class="text-xs uppercase tracking-[.3em] text-wheat-400">Impacto medible</p>
+        <h3 class="font-display text-2xl md:text-3xl mt-4 leading-tight">
+          Más <span class="italic text-wheat-400">cosecha</span>, menos <span class="italic text-wheat-400">insumos.</span>
+        </h3>
+      </div>
+      <div class="md:col-span-2 grid grid-cols-3 gap-8">
+        <div>
+          <div class="font-display text-4xl md:text-5xl font-light text-wheat-400">−30%</div>
+          <div class="text-xs uppercase tracking-[.2em] text-white/70 mt-2">Insumos químicos</div>
+        </div>
+        <div>
+          <div class="font-display text-4xl md:text-5xl font-light text-wheat-400">+5-10%</div>
+          <div class="text-xs uppercase tracking-[.2em] text-white/70 mt-2">Cultivo rescatado</div>
+        </div>
+        <div>
+          <div class="font-display text-4xl md:text-5xl font-light text-wheat-400">UBV</div>
+          <div class="text-xs uppercase tracking-[.2em] text-white/70 mt-2">Ahorro masivo de agua</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESO / CÓMO FUNCIONA ============ -->
+<section id="proceso" class="relative py-24 md:py-32 overflow-hidden bg-bone">
+  <div class="absolute -right-10 top-10 huge-numeral">03</div>
+
+  <div class="max-w-7xl mx-auto px-5 md:px-8 relative">
+    <div class="max-w-3xl reveal">
+      <p class="section-tag">03 · Cómo funciona</p>
+      <h2 class="font-display font-light text-forest-900 mt-6 leading-[1.02]" style="font-size: clamp(2.1rem, 4.2vw, 3.4rem);">
+        De tu llamada al vuelo, <span class="italic" style="font-weight:400;">en 4 pasos.</span>
+      </h2>
+      <p class="mt-6 text-ink/75 text-lg max-w-xl">
+        Un proceso claro, profesional y sin sorpresas. Así trabajamos desde el primer contacto hasta el reporte final entregado en tu mano.
+      </p>
+    </div>
+
+    <!-- Process timeline -->
+    <div class="mt-16 relative">
+      <!-- connector line (desktop only) -->
+      <div class="hidden lg:block absolute top-12 left-[12%] right-[12%] h-px" style="background:repeating-linear-gradient(90deg, rgba(90,122,77,.4) 0 6px, transparent 6px 14px);"></div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-5 relative">
+
+        <!-- Step 1 -->
+        <div class="reveal d1">
+          <div class="flex items-center gap-4 mb-5">
+            <div class="relative w-20 h-20 rounded-full bg-white border border-ink/10 flex items-center justify-center shadow-[0_10px_30px_-15px_rgba(15,26,20,.25)]">
+              <span class="font-display italic text-2xl text-forest-900">I</span>
+              <span class="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-wheat-500 flex items-center justify-center">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1f3d2a" stroke-width="2.2" stroke-linecap="round"><path d="M22 16.92V21a1 1 0 0 1-1.1 1 19.91 19.91 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.91 19.91 0 0 1 3.18 4.1 1 1 0 0 1 4.18 3h4.09a1 1 0 0 1 1 .75c.12.9.34 1.78.65 2.61a1 1 0 0 1-.22 1.05l-1.73 1.73a16 16 0 0 0 6 6l1.73-1.73a1 1 0 0 1 1.05-.22c.83.31 1.71.53 2.61.65a1 1 0 0 1 .75 1z"/></svg>
+              </span>
+            </div>
+          </div>
+          <p class="text-xs uppercase tracking-[.22em] text-moss font-semibold">Paso 01</p>
+          <h3 class="font-display text-xl text-forest-900 mt-2 leading-tight">Contacto y levantamiento</h3>
+          <p class="text-sm text-ink/70 mt-3 leading-relaxed">
+            Nos llamas o llenas el formulario. Visitamos tu predio o lo ubicamos por coordenadas para evaluar cultivo, topografía y accesos.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="reveal d2">
+          <div class="flex items-center gap-4 mb-5">
+            <div class="relative w-20 h-20 rounded-full bg-white border border-ink/10 flex items-center justify-center shadow-[0_10px_30px_-15px_rgba(15,26,20,.25)]">
+              <span class="font-display italic text-2xl text-forest-900">II</span>
+              <span class="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-wheat-500 flex items-center justify-center">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1f3d2a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              </span>
+            </div>
+          </div>
+          <p class="text-xs uppercase tracking-[.22em] text-moss font-semibold">Paso 02</p>
+          <h3 class="font-display text-xl text-forest-900 mt-2 leading-tight">Plan de vuelo y dosificación</h3>
+          <p class="text-sm text-ink/70 mt-3 leading-relaxed">
+            Nuestro ingeniero agrónomo diseña la ruta óptima y calibra la dosis por hectárea según tu plaga, cultivo y producto a aplicar.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="reveal d3">
+          <div class="flex items-center gap-4 mb-5">
+            <div class="relative w-20 h-20 rounded-full bg-white border border-ink/10 flex items-center justify-center shadow-[0_10px_30px_-15px_rgba(15,26,20,.25)]">
+              <span class="font-display italic text-2xl text-forest-900">III</span>
+              <span class="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-wheat-500 flex items-center justify-center">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1f3d2a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              </span>
+            </div>
+          </div>
+          <p class="text-xs uppercase tracking-[.22em] text-moss font-semibold">Paso 03</p>
+          <h3 class="font-display text-xl text-forest-900 mt-2 leading-tight">Ejecución aérea</h3>
+          <p class="text-sm text-ink/70 mt-3 leading-relaxed">
+            Piloto certificado vuela con monitoreo en tiempo real. Radar antiobstáculos activo, GPS RTK y control de deriva según viento.
+          </p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="reveal d4">
+          <div class="flex items-center gap-4 mb-5">
+            <div class="relative w-20 h-20 rounded-full bg-forest-900 text-white flex items-center justify-center shadow-[0_14px_34px_-14px_rgba(15,26,20,.6)]">
+              <span class="font-display italic text-2xl text-wheat-400">IV</span>
+              <span class="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-wheat-500 flex items-center justify-center">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1f3d2a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+            </div>
+          </div>
+          <p class="text-xs uppercase tracking-[.22em] text-moss font-semibold">Paso 04</p>
+          <h3 class="font-display text-xl text-forest-900 mt-2 leading-tight">Reporte y seguimiento</h3>
+          <p class="text-sm text-ink/70 mt-3 leading-relaxed">
+            Te entregamos mapa de cobertura, evidencia fotográfica del vuelo, hectáreas aplicadas y recomendaciones para tu próxima intervención.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trust strip -->
+    <div class="mt-16 grid md:grid-cols-3 gap-6 text-sm reveal">
+      <div class="flex items-center gap-4 p-5 rounded-2xl bg-white border border-ink/5">
+        <div class="w-11 h-11 rounded-xl bg-forest-50 flex items-center justify-center text-forest-700 shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <div>
+          <p class="font-display text-forest-900 font-semibold">Piloto certificado</p>
+          <p class="text-ink/60 text-xs mt-1">Licencia AFAC vigente y seguro de responsabilidad civil.</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 p-5 rounded-2xl bg-white border border-ink/5">
+        <div class="w-11 h-11 rounded-xl bg-forest-50 flex items-center justify-center text-forest-700 shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div>
+          <p class="font-display text-forest-900 font-semibold">Respuesta en 24 h</p>
+          <p class="text-ink/60 text-xs mt-1">Agendamos tu vuelo entre 48 y 72 horas tras la cotización.</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 p-5 rounded-2xl bg-white border border-ink/5">
+        <div class="w-11 h-11 rounded-xl bg-forest-50 flex items-center justify-center text-forest-700 shrink-0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
+        </div>
+        <div>
+          <p class="font-display text-forest-900 font-semibold">80–100 ha / día</p>
+          <p class="text-ink/60 text-xs mt-1">Rendimiento típico en condiciones óptimas de viento y clima.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARATIVA ============ -->
+<section id="comparativa" class="relative py-24 md:py-32 overflow-hidden">
+  <div class="absolute -right-10 top-10 huge-numeral">04</div>
+
+  <div class="max-w-7xl mx-auto px-5 md:px-8 relative">
+    <div class="max-w-3xl reveal">
+      <p class="section-tag">04 · Comparativa</p>
+      <h2 class="font-display font-light text-forest-900 mt-6 leading-[1.02]" style="font-size: clamp(2.1rem, 4.2vw, 3.4rem);">
+        Dron vs. <span class="italic" style="font-weight:400;">métodos tradicionales.</span>
+      </h2>
+      <p class="mt-6 text-ink/75 text-lg max-w-xl">
+        Una mirada honesta a cómo se compara la fumigación con dron frente a las alternativas convencionales.
+      </p>
+    </div>
+
+    <div class="mt-12 bg-white rounded-3xl border border-ink/5 p-4 md:p-8 reveal d1">
+      <div class="cmp-wrap">
+        <table class="cmp-table">
+          <thead>
+            <tr>
+              <th class="text-left">Criterio</th>
+              <th class="highlight-col">
+                <div class="flex flex-col items-center gap-1">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 12v6"/><path d="M7 7l-3-2M17 7l3-2M7 7l5 3 5-3"/><circle cx="4" cy="5" r="2"/><circle cx="20" cy="5" r="2"/><circle cx="12" cy="12" r="2"/></svg>
+                  <span>Dron<br>DJI T100</span>
+                </div>
+              </th>
+              <th>
+                <div class="flex flex-col items-center gap-1">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="17" r="3"/><circle cx="17" cy="17" r="3"/><path d="M10 17h4M4 11h8l2-4h4l2 4v6"/></svg>
+                  <span>Tractor<br>Terrestre</span>
+                </div>
+              </th>
+              <th>
+                <div class="flex flex-col items-center gap-1">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 12l-9 3-9-3 9-9z"/><path d="M12 15v6"/></svg>
+                  <span>Avioneta</span>
+                </div>
+              </th>
+              <th>
+                <div class="flex flex-col items-center gap-1">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="5" r="3"/><path d="M6 21v-6a6 6 0 0 1 12 0v6"/></svg>
+                  <span>Personal<br>Manual</span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="criterion">Precisión</td>
+              <td class="highlight-col"><span class="pill pill-yes">✓ Muy alta · RTK</span></td>
+              <td><span class="pill pill-mid">~ Media-alta</span></td>
+              <td><span class="pill pill-no">✕ Baja · deriva</span></td>
+              <td><span class="pill pill-no">✕ Irregular</span></td>
+            </tr>
+            <tr>
+              <td class="criterion">Daño al cultivo</td>
+              <td class="highlight-col"><span class="pill pill-yes">✓ Nulo</span></td>
+              <td><span class="pill pill-no">✕ Alto pisoteo</span></td>
+              <td><span class="pill pill-yes">✓ Nulo</span></td>
+              <td><span class="pill pill-mid">~ Medio</span></td>
+            </tr>
+            <tr>
+              <td class="criterion">Compactación de suelo</td>
+              <td class="highlight-col"><span class="pill pill-yes">✓ Nulo</span></td>
+              <td><span class="pill pill-no">✕ Muy alta</span></td>
+              <td><span class="pill pill-yes">✓ Nulo</span></td>
+              <td><span class="pill pill-mid">~ Baja</span></td>
+            </tr>
+            <tr>
+              <td class="criterion">Consumo de agua</td>
+              <td class="highlight-col"><span class="pill pill-yes">✓ Muy bajo · UBV</span></td>
+              <td><span class="pill pill-no">✕ Alto</span></td>
+              <td><span class="pill pill-no">✕ Alto</span></td>
+              <td><span class="pill pill-mid">~ Medio-alto</span></td>
+            </tr>
+            <tr>
+              <td class="criterion">Seguridad laboral</td>
+              <td class="highlight-col"><span class="pill pill-yes">✓ Muy alta · remoto</span></td>
+              <td><span class="pill pill-mid">~ Media · cabina</span></td>
+              <td><span class="pill pill-no">✕ Baja · aérea</span></td>
+              <td><span class="pill pill-no">✕ Muy baja</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p class="mt-6 text-sm text-ink/60 max-w-2xl">
+      <em class="font-display">Nota:</em> Este cuadro sintetiza las características estándar de cada método. Los resultados reales pueden variar según cultivo, clima y superficie.
+    </p>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq" class="relative py-24 md:py-32 bg-cream overflow-hidden">
+  <div class="absolute -left-10 top-10 huge-numeral">05</div>
+
+  <div class="max-w-7xl mx-auto px-5 md:px-8 relative grid lg:grid-cols-12 gap-12 lg:gap-16">
+    <div class="lg:col-span-4 reveal">
+      <p class="section-tag">05 · Preguntas</p>
+      <h2 class="font-display font-light text-forest-900 mt-6 leading-[1.02]" style="font-size: clamp(2.1rem, 3.6vw, 3rem);">
+        Resolvemos tus <span class="italic" style="font-weight:400;">dudas.</span>
+      </h2>
+      <p class="mt-6 text-ink/75 leading-relaxed">
+        Las preguntas más frecuentes de productores como tú. ¿No encuentras la tuya?
+        <a href="#cotizar" class="underline decoration-wheat-500 underline-offset-4 decoration-2 hover:text-forest-700">Escríbenos directamente</a>.
+      </p>
+
+      <!-- Quick contact card -->
+      <div class="mt-10 p-6 rounded-2xl bg-white border border-ink/5">
+        <p class="text-xs uppercase tracking-[.22em] text-moss font-semibold">¿Tienes prisa?</p>
+        <p class="font-display text-forest-900 text-lg mt-2 leading-snug">Llámanos y te agendamos un vuelo en esta misma semana.</p>
+        <a href="tel:+521234567890" class="mt-4 inline-flex items-center gap-2 text-forest-700 font-semibold hover:text-wheat-600 transition">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92V21a1 1 0 0 1-1.1 1 19.91 19.91 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.91 19.91 0 0 1 3.18 4.1 1 1 0 0 1 4.18 3h4.09a1 1 0 0 1 1 .75c.12.9.34 1.78.65 2.61a1 1 0 0 1-.22 1.05l-1.73 1.73a16 16 0 0 0 6 6l1.73-1.73a1 1 0 0 1 1.05-.22c.83.31 1.71.53 2.61.65a1 1 0 0 1 .75 1z"/></svg>
+          +52 (123) 456‑7890
+        </a>
+      </div>
+    </div>
+
+    <div class="lg:col-span-8 reveal d1">
+      <details class="faq" open>
+        <summary>
+          <span>¿El dron puede operar en terrenos irregulares o con pendientes?</span>
+          <span class="icn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </summary>
+        <div class="body">
+          Sí. El DJI Agras T100 cuenta con radares y sensores de visión que leen la topografía del terreno en tiempo real, ajustando su altura automáticamente para asegurar una aspersión uniforme incluso en colinas o terrenos accidentados.
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>¿Qué tipo de productos pueden aplicar?</span>
+          <span class="icn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </summary>
+        <div class="body">
+          El sistema es versátil y puede aplicar insecticidas, fungicidas, herbicidas y fertilizantes foliares (líquidos). Además, cuenta con un sistema para sembrar o esparcir fertilizantes sólidos gracias a su tanque de 150 L.
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>¿Es más costoso que usar un tractor?</span>
+          <span class="icn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </summary>
+        <div class="body">
+          Aunque el precio del servicio por hectárea puede ser competitivo, el ahorro real proviene de la reducción de hasta un 30% en insumos químicos, el uso casi nulo de agua y la prevención de la pérdida del 5–10% del cultivo que usualmente es aplastado por el paso de las llantas del tractor.
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>¿Cuál es la mejor hora del día para fumigar con dron?</span>
+          <span class="icn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </summary>
+        <div class="body">
+          Las ventanas ideales son al amanecer (6–10 a.m.) y al atardecer (5–8 p.m.), cuando el viento es menor a 15 km/h y la temperatura moderada. Esto maximiza la absorción del producto por la planta y minimiza la deriva. Coordinamos la hora de vuelo contigo según el clima pronosticado para tu zona.
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>¿Cuántas hectáreas pueden fumigar en un solo día?</span>
+          <span class="icn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </summary>
+        <div class="body">
+          En condiciones óptimas, el DJI Agras T100 puede cubrir entre 80 y 100 hectáreas por jornada, dependiendo del tipo de aplicación, cultivo y accesos. Para predios más grandes coordinamos jornadas consecutivas o llevamos equipo adicional.
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>¿Tienen licencia y seguro para operar?</span>
+          <span class="icn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </summary>
+        <div class="body">
+          Sí. Nuestros pilotos cuentan con licencia vigente emitida por la AFAC (Agencia Federal de Aviación Civil) y contamos con póliza de responsabilidad civil por daños a terceros. Operamos dentro del marco regulatorio mexicano para RPAS agrícolas.
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>¿Pueden volar cerca de viviendas, carreteras o ganado?</span>
+          <span class="icn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </summary>
+        <div class="body">
+          Sí, siguiendo protocolos de distancia de seguridad y control de deriva. Antes del vuelo identificamos viviendas, caminos, cuerpos de agua y corrales aledaños para ajustar la ruta, la altura y las boquillas. La alta precisión del T100 permite trabajar con márgenes mínimos sin afectar zonas sensibles.
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>
+          <span>¿En qué zonas ofrecen servicio?</span>
+          <span class="icn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </summary>
+        <div class="body">
+          Estamos en La Barca, Jalisco y damos servicio en toda la región del Bajío: Ocotlán, Jamay, Poncitlán, Ayotlán, Degollado, Tototlán, Atotonilco el Alto, Arandas y zonas cercanas de Michoacán. Si no estás seguro, mándanos la ubicación por WhatsApp y te confirmamos al momento.
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIDEOS ============ -->
+<section id="videos" class="relative py-24 md:py-32 overflow-hidden">
+  <div class="absolute -right-10 top-10 huge-numeral">06</div>
+
+  <div class="max-w-7xl mx-auto px-5 md:px-8 relative">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 reveal">
+      <div class="max-w-2xl">
+        <p class="section-tag">06 · En acción</p>
+        <h2 class="font-display font-light text-forest-900 mt-6 leading-[1.02]" style="font-size: clamp(2.1rem, 4.2vw, 3.4rem);">
+          Galería de <span class="italic" style="font-weight:400;">operaciones en campo.</span>
+        </h2>
+      </div>
+      <p class="text-sm text-ink/60 max-w-xs">
+        <span class="inline-block w-2 h-2 bg-wheat-500 rounded-full mr-2 align-middle"></span>
+        Contenido próximamente en YouTube y TikTok.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 mt-14">
+      <!-- Video 1 -->
+      <div class="video-card reveal d1">
+        <div class="thumb" style="background-image:linear-gradient(180deg,rgba(15,26,20,0),rgba(15,26,20,.3)), url('https://images.unsplash.com/photo-1595348020949-87cdfbb44174?auto=format&fit=crop&w=900&q=80');"></div>
+        <span class="platform-tag tag-yt">▶ YouTube</span>
+        <div class="shade"></div>
+        <span class="play">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#1f3d2a"><polygon points="8 5 19 12 8 19 8 5"/></svg>
+        </span>
+        <div class="absolute bottom-5 left-5 right-5 text-white">
+          <p class="text-xs uppercase tracking-[.2em] text-wheat-400">Demostración</p>
+          <h3 class="font-display text-lg mt-1 leading-tight">Fumigación de precisión en agave con DJI T100 en Jalisco</h3>
+        </div>
+      </div>
+
+      <!-- Video 2 -->
+      <div class="video-card reveal d2">
+        <div class="thumb" style="background-image:linear-gradient(180deg,rgba(15,26,20,0),rgba(15,26,20,.3)), url('https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?auto=format&fit=crop&w=900&q=80');"></div>
+        <span class="platform-tag tag-tt">♪ TikTok</span>
+        <div class="shade"></div>
+        <span class="play">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#1f3d2a"><polygon points="8 5 19 12 8 19 8 5"/></svg>
+        </span>
+        <div class="absolute bottom-5 left-5 right-5 text-white">
+          <p class="text-xs uppercase tracking-[.2em] text-wheat-400">Comparativa</p>
+          <h3 class="font-display text-lg mt-1 leading-tight">Tractor vs. Dron — mira cuánto cultivo salvas</h3>
+        </div>
+      </div>
+
+      <!-- Video 3 -->
+      <div class="video-card reveal d3">
+        <div class="thumb" style="background-image:linear-gradient(180deg,rgba(15,26,20,0),rgba(15,26,20,.3)), url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=900&q=80');"></div>
+        <span class="platform-tag tag-yt">▶ YouTube</span>
+        <div class="shade"></div>
+        <span class="play">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#1f3d2a"><polygon points="8 5 19 12 8 19 8 5"/></svg>
+        </span>
+        <div class="absolute bottom-5 left-5 right-5 text-white">
+          <p class="text-xs uppercase tracking-[.2em] text-wheat-400">Esparcimiento</p>
+          <h3 class="font-display text-lg mt-1 leading-tight">100 kg de fertilizante sólido en tiempo récord</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COTIZACIÓN / CONTACTO ============ -->
+<section id="cotizar" class="relative py-24 md:py-32 bg-forest-900 text-white overflow-hidden">
+  <!-- atmosphere -->
+  <div class="absolute inset-0 opacity-40"
+       style="background:
+         radial-gradient(circle at 20% 10%, rgba(212,175,101,.25), transparent 50%),
+         radial-gradient(circle at 90% 80%, rgba(90,122,77,.4), transparent 55%);"></div>
+  <div class="absolute -left-10 top-10 huge-numeral" style="-webkit-text-stroke-color:rgba(212,175,101,.25);">07</div>
+
+  <div class="max-w-7xl mx-auto px-5 md:px-8 relative grid lg:grid-cols-12 gap-12 lg:gap-20">
+    <!-- Left: intro + contact info -->
+    <div class="lg:col-span-5 reveal">
+      <p class="section-tag text-wheat-400">07 · Cotización</p>
+      <h2 class="font-display font-light mt-6 leading-[1.02]" style="font-size: clamp(2.1rem, 4vw, 3.3rem);">
+        Pide tu cotización <span class="italic text-wheat-400">personalizada.</span>
+      </h2>
+      <p class="mt-6 text-white/75 text-lg leading-relaxed max-w-md">
+        Cuéntanos sobre tu parcela y diseñaremos la estrategia de aplicación perfecta para tu cultivo. Te contestamos en menos de 24 h.
+      </p>
+
+      <div class="mt-12 space-y-6 text-sm">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-full border border-white/25 flex items-center justify-center shrink-0 text-wheat-400">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-[.24em] text-wheat-400">Ubicación</p>
+            <p class="mt-1 font-display text-lg">La Barca, Jalisco — México</p>
+            <p class="text-white/60">Servicio en toda la región del Bajío</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-full border border-white/25 flex items-center justify-center shrink-0 text-wheat-400">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92V21a1 1 0 0 1-1.1 1 19.91 19.91 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.91 19.91 0 0 1 3.18 4.1 1 1 0 0 1 4.18 3h4.09a1 1 0 0 1 1 .75c.12.9.34 1.78.65 2.61a1 1 0 0 1-.22 1.05l-1.73 1.73a16 16 0 0 0 6 6l1.73-1.73a1 1 0 0 1 1.05-.22c.83.31 1.71.53 2.61.65a1 1 0 0 1 .75 1z"/></svg>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-[.24em] text-wheat-400">WhatsApp</p>
+            <p class="mt-1 font-display text-lg">+52 (123) 456‑7890</p>
+            <p class="text-white/60">Respuesta inmediata de 8 a.m. a 8 p.m.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-full border border-white/25 flex items-center justify-center shrink-0 text-wheat-400">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg>
+          </div>
+          <div>
+            <p class="text-xs uppercase tracking-[.24em] text-wheat-400">Correo</p>
+            <p class="mt-1 font-display text-lg">info@agroquetzal.com</p>
+            <p class="text-white/60">Cotizaciones, facturas y soporte</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coverage zones -->
+      <div class="mt-10 p-6 rounded-2xl border border-white/10 bg-white/[.03]">
+        <p class="text-xs uppercase tracking-[.24em] text-wheat-400 font-semibold">Zonas de cobertura</p>
+        <p class="mt-2 text-white/75 text-sm leading-relaxed">Servicio regular en los siguientes municipios de Jalisco y zonas cercanas de Michoacán:</p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <span class="text-xs px-3 py-1.5 rounded-full bg-white/10 border border-white/10">La Barca</span>
+          <span class="text-xs px-3 py-1.5 rounded-full bg-white/10 border border-white/10">Ocotlán</span>
+          <span class="text-xs px-3 py-1.5 rounded-full bg-white/10 border border-white/10">Jamay</span>
+          <span class="text-xs px-3 py-1.5 rounded-full bg-white/10 border border-white/10">Poncitlán</span>
+          <span class="text-xs px-3 py-1.5 rounded-full bg-white/10 border border-white/10">Ayotlán</span>
+          <span class="text-xs px-3 py-1.5 rounded-full bg-white/10 border border-white/10">Degollado</span>
+          <span class="text-xs px-3 py-1.5 rounded-full bg-white/10 border border-white/10">Tototlán</span>
+          <span class="text-xs px-3 py-1.5 rounded-full bg-white/10 border border-white/10">Atotonilco el Alto</span>
+          <span class="text-xs px-3 py-1.5 rounded-full bg-white/10 border border-white/10">Arandas</span>
+          <span class="text-xs px-3 py-1.5 rounded-full bg-wheat-500/20 border border-wheat-500/40 text-wheat-400">+ tu municipio</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: form -->
+    <div class="lg:col-span-7 reveal d1">
+      <form id="quoteForm" class="bg-white/5 backdrop-blur-sm rounded-3xl border border-white/10 p-8 md:p-10"
+            onsubmit="event.preventDefault(); handleQuote(this);">
+        <div class="grid md:grid-cols-2 gap-x-8 gap-y-2">
+          <div>
+            <label class="form-label">01 · Nombre completo</label>
+            <input class="input" placeholder="Tu nombre" required />
+          </div>
+          <div>
+            <label class="form-label">02 · Teléfono / WhatsApp</label>
+            <input class="input" placeholder="(+52) 000‑0000" required />
+          </div>
+          <div class="md:col-span-2">
+            <label class="form-label">03 · Ubicación del predio</label>
+            <input class="input" placeholder="Municipio / Ejido / Comunidad" required />
+          </div>
+          <div>
+            <label class="form-label">04 · Tipo de cultivo</label>
+            <select class="select">
+              <option>Maíz</option>
+              <option>Agave</option>
+              <option>Trigo</option>
+              <option>Sorgo</option>
+              <option>Caña de azúcar</option>
+              <option>Alfalfa</option>
+              <option>Frijol</option>
+              <option>Hortalizas</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">05 · Hectáreas a trabajar</label>
+            <input class="input" type="number" min="1" placeholder="Ej. 25" required />
+          </div>
+          <div class="md:col-span-2">
+            <label class="form-label">06 · Comentarios adicionales</label>
+            <textarea class="textarea" rows="3" placeholder="Cuéntanos sobre tu plaga, fecha objetivo, dudas..."></textarea>
+          </div>
+        </div>
+
+        <div class="mt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+          <p class="text-xs text-white/55 max-w-xs">
+            Al enviar aceptas ser contactado por Agro Quetzal para coordinar la cotización de tu predio.
+          </p>
+          <button type="submit" class="btn-primary text-base">
+            Enviar cotización <span class="arrow">→</span>
+          </button>
+        </div>
+
+        <div id="formSuccess" class="hidden mt-6 p-4 rounded-xl bg-wheat-400/20 border border-wheat-400/40 text-wheat-400 text-sm">
+          ✓ ¡Gracias! Recibimos tu solicitud. Te contactaremos en las próximas horas.
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="bg-forest-900 text-white/80 pt-16 pb-10 border-t border-white/10">
+  <div class="max-w-7xl mx-auto px-5 md:px-8">
+    <div class="grid md:grid-cols-12 gap-10">
+      <div class="md:col-span-5">
+        <div class="flex items-center gap-3">
+          <span class="w-11 h-11 rounded-full flex items-center justify-center" style="background:linear-gradient(135deg,#355e3b,#1f3d2a);">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#d4af65" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3c4 2 6 5 6 9s-2 7-6 9c-4-2-6-5-6-9s2-7 6-9Z"/>
+              <path d="M12 3v18"/>
+              <path d="M8.5 7c1 1 2 1.5 3.5 1.5"/>
+              <path d="M8 11c1.2 1 2.4 1.5 4 1.5"/>
+              <path d="M8.5 15c1 1 2 1.5 3.5 1.5"/>
+            </svg>
+          </span>
+          <div>
+            <div class="font-display text-xl text-white">Agro Quetzal</div>
+            <div class="text-[10px] tracking-[.24em] uppercase text-white/50 mt-1">Tecnología · Precisión · Campo</div>
+          </div>
+        </div>
+        <p class="mt-6 max-w-sm text-sm leading-relaxed text-white/65">
+          Fumigación agrícola de alta precisión con drones de última generación. Bienvenidos a la agricultura del futuro, hoy.
+        </p>
+      </div>
+
+      <div class="md:col-span-3">
+        <h4 class="text-xs uppercase tracking-[.24em] text-wheat-400 font-semibold">Navegación</h4>
+        <ul class="mt-5 space-y-3 text-sm">
+          <li><a href="#tecnologia" class="hover:text-white">Tecnología</a></li>
+          <li><a href="#beneficios" class="hover:text-white">Beneficios</a></li>
+          <li><a href="#proceso" class="hover:text-white">Cómo funciona</a></li>
+          <li><a href="#comparativa" class="hover:text-white">Comparativa</a></li>
+          <li><a href="#faq" class="hover:text-white">Preguntas frecuentes</a></li>
+          <li><a href="#cotizar" class="hover:text-white">Cotizar</a></li>
+        </ul>
+      </div>
+
+      <div class="md:col-span-4">
+        <h4 class="text-xs uppercase tracking-[.24em] text-wheat-400 font-semibold">Síguenos</h4>
+        <div class="mt-5 flex items-center gap-3">
+          <a href="#" class="w-11 h-11 rounded-full border border-white/15 hover:border-wheat-400 hover:text-wheat-400 flex items-center justify-center transition" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="#" class="w-11 h-11 rounded-full border border-white/15 hover:border-wheat-400 hover:text-wheat-400 flex items-center justify-center transition" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" class="w-11 h-11 rounded-full border border-white/15 hover:border-wheat-400 hover:text-wheat-400 flex items-center justify-center transition" aria-label="YouTube">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 7s-.2-1.5-1-2.1c-.9-.8-1.9-.8-2.3-.9C16.6 3.7 12 3.7 12 3.7s-4.6 0-7.7.3c-.4.1-1.4.1-2.3.9-.8.6-1 2.1-1 2.1S.8 8.7.8 10.5v1.6c0 1.8.2 3.5.2 3.5s.2 1.5 1 2.1c.9.8 2.1.8 2.6.9 1.9.2 7.4.3 7.4.3s4.6 0 7.7-.3c.4-.1 1.4-.1 2.3-.9.8-.6 1-2.1 1-2.1s.2-1.7.2-3.5v-1.6c0-1.8-.2-3.5-.2-3.5z"/><polygon points="9.8 14.5 15.5 11.3 9.8 8.1 9.8 14.5"/></svg>
+          </a>
+          <a href="#" class="w-11 h-11 rounded-full border border-white/15 hover:border-wheat-400 hover:text-wheat-400 flex items-center justify-center transition" aria-label="TikTok">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+          </a>
+          <a href="#" class="w-11 h-11 rounded-full border border-white/15 hover:border-wheat-400 hover:text-wheat-400 flex items-center justify-center transition" aria-label="WhatsApp">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a9 9 0 1 1-3.5-7.1L21 3l-1.8 3.4A9 9 0 0 1 21 12z"/><path d="M8 10c.5 3 2.5 5 5.5 5.5l1.5-1.5 2 1-.5 2c-4 0-9-3-9-9l2-.5 1 2L8 10z"/></svg>
+          </a>
+        </div>
+        <p class="mt-6 text-xs text-white/55 leading-relaxed">
+          Comparte la revolución agrícola con tus colegas. Contenido nuevo cada semana.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-14 pt-6 border-t border-white/10 flex flex-col md:flex-row gap-4 md:items-center md:justify-between text-xs text-white/50">
+      <p>© 2026 Agro Quetzal — Todos los derechos reservados.</p>
+      <div class="flex items-center gap-6">
+        <a href="#" class="hover:text-white">Aviso de privacidad</a>
+        <a href="#" class="hover:text-white">Términos y condiciones</a>
+        <span>Hecho con <span class="text-wheat-400">♦</span> en La Barca, Jalisco</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ SCRIPTS ============ -->
+<script>
+  // Navbar scroll effect
+  const nav = document.getElementById('nav');
+  const navInner = document.getElementById('navInner');
+  const brandWord = document.getElementById('brandWord');
+  const brandTag  = document.getElementById('brandTag');
+  const navLinks  = document.querySelectorAll('[data-nav]');
+  const menuBtn   = document.getElementById('menuBtn');
+  const mobilePanel = document.getElementById('mobilePanel');
+
+  function onScroll(){
+    if(window.scrollY > 60){
+      nav.classList.add('bg-bone/95','backdrop-blur','shadow-[0_1px_0_rgba(15,26,20,0.08)]');
+      navInner.classList.add('py-3','md:py-4');
+      navInner.classList.remove('py-5','md:py-6');
+      brandWord.classList.remove('text-white');
+      brandWord.classList.add('text-forest-900');
+      brandTag.classList.remove('text-white/70');
+      brandTag.classList.add('text-moss');
+      navLinks.forEach(l=>{
+        l.classList.remove('text-white','text-white/85');
+        l.classList.add('text-ink','hover:text-forest-700');
+      });
+      menuBtn.classList.remove('text-white','border-white/30');
+      menuBtn.classList.add('text-forest-900','border-ink/15');
+    } else {
+      nav.classList.remove('bg-bone/95','backdrop-blur','shadow-[0_1px_0_rgba(15,26,20,0.08)]');
+      navInner.classList.remove('py-3','md:py-4');
+      navInner.classList.add('py-5','md:py-6');
+      brandWord.classList.add('text-white');
+      brandWord.classList.remove('text-forest-900');
+      brandTag.classList.add('text-white/70');
+      brandTag.classList.remove('text-moss');
+      navLinks.forEach(l=>{
+        l.classList.add('text-white');
+        l.classList.remove('text-ink','hover:text-forest-700');
+      });
+      menuBtn.classList.add('text-white','border-white/30');
+      menuBtn.classList.remove('text-forest-900','border-ink/15');
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Mobile menu toggle
+  menuBtn.addEventListener('click', ()=> mobilePanel.classList.toggle('open'));
+  document.querySelectorAll('.mobile-link').forEach(a=>{
+    a.addEventListener('click', ()=> mobilePanel.classList.remove('open'));
+  });
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  },{ threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Active nav link on scroll
+  const sections = ['inicio','tecnologia','beneficios','proceso','comparativa','faq','videos','cotizar'];
+  const sectionEls = sections.map(id=>document.getElementById(id)).filter(Boolean);
+  function onActive(){
+    const y = window.scrollY + window.innerHeight*0.35;
+    let current = sections[0];
+    sectionEls.forEach(s=>{ if(s.offsetTop <= y) current = s.id; });
+    navLinks.forEach(l=>{
+      l.classList.toggle('is-active', l.getAttribute('href') === '#'+current);
+    });
+  }
+  window.addEventListener('scroll', onActive, { passive:true });
+
+  // Form submit (demo only — conecta con tu backend real)
+  function handleQuote(form){
+    const success = document.getElementById('formSuccess');
+    success.classList.remove('hidden');
+    form.reset();
+    setTimeout(()=> success.scrollIntoView({ behavior:'smooth', block:'center' }), 80);
+  }
+</script>
+
+</body>
+</html>
