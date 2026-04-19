@@ -337,9 +337,9 @@
     <div id="navInner" class="flex items-center justify-between py-5 md:py-6 transition-all duration-500">
       <!-- Logo -->
       <a href="#top" class="flex items-center gap-3 group">
-        <img src="logo.png?v=2" alt="Agro Quetzal"
+        <img src="logo.png?v=3" alt="Agro Quetzal"
              class="h-12 md:h-14 w-auto transition-transform duration-500 group-hover:scale-[1.04]"
-             style="filter: drop-shadow(0 2px 6px rgba(0,0,0,.25));"
+             style="mix-blend-mode: multiply;"
              onerror="this.onerror=null; this.style.cssText='height:48px;padding:8px 12px;background:rgba(239,68,68,.15);outline:2px dashed #ef4444;color:#fecaca;font-size:11px;font-family:monospace;display:flex;align-items:center;border-radius:6px;'; this.replaceWith(Object.assign(document.createElement('span'),{style:this.style.cssText,textContent:'⚠ logo.png NO CARGA'})); console.error('%c[Agro Quetzal] No se pudo cargar logo.png.','color:#ef4444;font-weight:bold;','\\n• Verifica que el archivo se llame EXACTAMENTE \"logo.png\" (minúsculas, extensión .png, sin espacios)\\n• Verifica que esté en la misma carpeta que index.html\\n• Haz hard refresh: Ctrl+Shift+R (Win) o Cmd+Shift+R (Mac)');" />
         <!-- Text lock-up. Si tu logo.png ya incluye el nombre "Agro Quetzal",
              puedes eliminar este <span> completo. -->
@@ -1273,7 +1273,8 @@
     <div class="grid md:grid-cols-12 gap-10">
       <div class="md:col-span-5">
         <div class="flex items-center gap-3">
-          <img src="logo.png?v=2" alt="Agro Quetzal" class="h-12 w-auto" />
+          <img src="logo.png?v=3" alt="Agro Quetzal" class="h-12 w-auto"
+               style="mix-blend-mode: multiply;" />
           <!-- Si tu logo.png ya incluye el wordmark, puedes eliminar este <div>. -->
           <div>
             <div class="font-display text-xl text-white">Agro Quetzal</div>
